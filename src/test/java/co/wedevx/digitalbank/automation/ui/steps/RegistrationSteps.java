@@ -6,6 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class RegistrationSteps {
 
 
     RegistrationPage registrationPage = new RegistrationPage(getDriver());
+    List<Map<String, Object>> nextValList = new ArrayList<>();
 
     public RegistrationSteps() throws MalformedURLException {
     }
@@ -50,10 +52,13 @@ public class RegistrationSteps {
     public void theFollowingUserInfoShouldBeSavedInTheDb(List<Map<String, String>> expectedUserProfileInfoInDBList) {
      Map<String, String> expectedUserInfoMap = expectedUserProfileInfoInDBList.get(0);
      String queryUserTable = String.format(" select * from users where username = '%s'", expectedUserInfoMap.get("email"));
-        String queryUserProfile = String.format(" select * from user_profile where email_address = '%s'", expectedUserInfoMap.get("email"));
+     String queryUserProfile = String.format(" select * from user_profile where email_address = '%s'", expectedUserInfoMap.get("email"));
 
-       List<Map<String, Object>> actualUserInfoList =  DBUtils.runSQLSelectQuery(queryUserTable);
-       List<Map<String, Object>> actualUserProfileInfoList =  DBUtils.runSQLSelectQuery(queryUserProfile);
+
+
+
+        List<Map<String, Object>> actualUserInfoList =  DBUtils.runSQLSelectQuery(queryUserTable);
+        List<Map<String, Object>> actualUserProfileInfoList =  DBUtils.runSQLSelectQuery(queryUserProfile);
 
        assertEquals(1, actualUserInfoList.size(), "Registration generate unexpected number of users");
        assertEquals(1, actualUserProfileInfoList.size(), "Registration generate unexpected number of user profiles");
@@ -74,7 +79,7 @@ public class RegistrationSteps {
         assertEquals(expectedUserInfoMap.get("postalCode"), actualUserProfileInfoMap.get("postal_code"),  " registration generated  wrong postalCode");
         assertEquals(expectedUserInfoMap.get("country"), actualUserProfileInfoMap.get("country"),  " registration generated  wrong country");
         assertEquals(expectedUserInfoMap.get("homePhone"), actualUserProfileInfoMap.get("home_phone"),  " registration generated  wrong homePhone");
-       // assertEquals(expectedUserInfoMap.get("mobilePhone"), actualUserProfileInfoMap.get("mobile_phone"),  " registration generated  wrong mobilePhone");
+        assertEquals(expectedUserInfoMap.get("mobilePhone"), actualUserProfileInfoMap.get("mobile_phone"),  " registration generated  wrong mobilePhone");
         assertEquals(expectedUserInfoMap.get("workPhone"), actualUserProfileInfoMap.get("work_phone"),  " registration generated  wrong workPhone");
       //validate users table
 
@@ -83,8 +88,10 @@ public class RegistrationSteps {
         assertEquals(expectedUserInfoMap.get("credentialsNonExpired"), String.valueOf(actualUserInfoMap.get("credentials_non_expired")),  "credentialsNonExpired mismatch upon registration");
         assertEquals(expectedUserInfoMap.get("enabled"), String.valueOf(actualUserInfoMap.get("enabled")),  "account enabled mismatch upon registration");
         assertEquals(expectedUserInfoMap.get("email"), actualUserInfoMap.get("username"),  "account enabled mismatch upon registration");
+        assertEquals(nextValList.get(0).get("next_val"), actualUserInfoMap.get("id"),  " Id mismatch ");
 
-
+        long expectedUserProfileId = Integer.parseInt(String.valueOf(nextValList.get(0).get("next_val")));
+        assertEquals(++expectedUserProfileId, actualUserProfileInfoMap.get("id"),  " Id mismatch ");
 
 
 
@@ -97,8 +104,11 @@ public class RegistrationSteps {
         String queryForUserProfile = String.format("DELETE from user_profile WHERE email_address = '%s'", email);
         String queryForUsers = String.format("DELETE from users WHERE username = '%s'", email);
 
-        DBUtils.runSQLSelectQuery(queryForUserProfile);
-        DBUtils.runSQLSelectQuery(queryForUsers);
+        String queryToGetNextValInHibernateSequenceTable = String.format("select * from hibernate_sequence");
+        nextValList = DBUtils.runSQLSelectQuery(queryToGetNextValInHibernateSequenceTable);
+
+        DBUtils.runSQLUpdateQuery(queryForUserProfile);
+        DBUtils.runSQLUpdateQuery(queryForUsers);
     }
 
 

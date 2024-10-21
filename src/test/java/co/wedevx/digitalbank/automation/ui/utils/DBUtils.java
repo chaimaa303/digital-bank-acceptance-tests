@@ -14,8 +14,8 @@ import static java.sql.DriverManager.getConnection;
     public class DBUtils {
     //method to establish connection with db
     private static Connection connection = null;
-    private static Statement statement;
-    private static ResultSet resultSet;
+    private static Statement statement = null;
+    private static ResultSet resultSet = null;
 
     //method to establish connection with the db
     public static void establishConnection() {

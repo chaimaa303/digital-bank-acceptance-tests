@@ -152,6 +152,9 @@ public class RegistrationPage {
             if (firstRow.get("homePhone") != null) {
                 homePhoneTxt.sendKeys(firstRow.get("homePhone"));
             }
+            if (firstRow.get("mobilePhone") != null) {
+                mobilePhoneTxt.sendKeys(firstRow.get("mobilePhone"));
+            }
             if (firstRow.get("workPhone") != null) {
                 workPhoneTxt.sendKeys(firstRow.get("workPhone"));
             }

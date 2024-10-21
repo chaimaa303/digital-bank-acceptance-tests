@@ -18,17 +18,20 @@ public class Hooks {
 
     @Before("@Registration")
     public  void establishConnectionToDB() {
-
         DBUtils.establishConnection();
     }
+
+
 
     @Before("not @Registration")
     public void the_user_on_dbank_homepage() {
         try {
             getDriver().get("http://chaimaak2540.mydevx.com/bank/login");
+            //getDriver().get("https://dbank-qa.wedevx.co/bank/login");
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+
 
     }
 
@@ -40,7 +43,7 @@ public class Hooks {
     }
 
     @After()
-    public void closeConnectionToDB(){
+    public static void closeConnectionToDB(){
         DBUtils.closeConnection();
 
     }
