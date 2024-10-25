@@ -15,9 +15,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
@@ -28,37 +30,22 @@ public class Driver {
 
     }
 
-    public static WebDriver getDriver()  {
+    public static WebDriver getDriver() {
         if (driver == null) {
             String browser = ConfigReader.getPropertiesValue("browser");
 
-            switch (browser) {
+            switch (browser.toLowerCase()) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver();
+                    break;
+                case "safari":
+                    driver = new SafariDriver();
                     break;
                 case "ie":
                     WebDriverManager.iedriver().setup();
                     driver = new InternetExplorerDriver();
                     break;
-                case "edge":
-                    WebDriverManager.edgedriver().setup();
-                    driver = new EdgeDriver();
-                    break;
-
-//                case "headless":
-//                    WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
-//                    FirefoxOptions options = new FirefoxOptions();
-//
-//                    options.addArguments("--window-size=1920,1080");
-//                    options.addArguments("disable-extensions");
-//                    options.addArguments("--proxy-server='direct://'");
-//                    options.addArguments("--proxy-bypass-list=*");
-//                    options.addArguments("--start-maximized");
-//                    options.addArguments("--headless");
-//
-//                    driver = new FirefoxDriver(options);
-//                    break;
                 case "headless":
                     ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
                     ChromeOptions options = new ChromeOptions();
@@ -71,24 +58,21 @@ public class Driver {
                     options.addArguments("--headless");
                     driver = new ChromeDriver(options);
                     break;
-
                 case "saucelabs":
                     String platform = ConfigReader.getPropertiesValue("dbank.saucelabs.platform");
                     String browserType = ConfigReader.getPropertiesValue("dbank.saucelabs.browser");
                     String browserVersion = ConfigReader.getPropertiesValue("dbank.saucelabs.browser.version");
-
-                    driver = loadSauceLabs(platform,browserType,browserVersion);
+                    driver = loadSauceLabs(platform, browserType, browserVersion);
                     break;
-
-
-                case "firefox":
                 default:
                     WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
                     break;
-
             }
+
         }
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
         return driver;
     }
 

@@ -59,11 +59,11 @@ public class RegistrationSteps {
        assertEquals(1, actualUserInfoList.size(), "Registration generate unexpected number of users");
        assertEquals(1, actualUserProfileInfoList.size(), "Registration generate unexpected number of user profiles");
 
-       Map<String, Object> actualUserInfoMap = actualUserInfoList.get(0);
+        Map<String, Object> actualUserInfoMap = actualUserInfoList.get(0);
         Map<String, Object> actualUserProfileInfoMap = actualUserProfileInfoList.get(0);
         //Validate user profile
         assertEquals(expectedUserInfoMap.get("title"), actualUserProfileInfoMap.get("title"),  " registration generated  wrong title");
-            assertEquals(expectedUserInfoMap.get("firstName"), actualUserProfileInfoMap.get("first_name"),  " registration generated  wrong firstName");
+        assertEquals(expectedUserInfoMap.get("firstName"), actualUserProfileInfoMap.get("first_name"),  " registration generated  wrong firstName");
         assertEquals(expectedUserInfoMap.get("lastName"), actualUserProfileInfoMap.get("last_name"),  " registration generated  wrong lastName");
         assertEquals(expectedUserInfoMap.get("gender"), actualUserProfileInfoMap.get("gender"),  " registration generated  wrong gender");
        // assertEquals(expectedUserInfoMap.get("dob"), actualUserProfileInfoMap.get("dob"),  " registration generated  wrong dob");
