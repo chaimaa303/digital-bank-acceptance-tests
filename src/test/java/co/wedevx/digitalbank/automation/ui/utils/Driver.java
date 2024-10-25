@@ -43,7 +43,8 @@ public class Driver {
                     break;
 
                 case "headless":
-                    WebDriverManager.firefoxdriver().setup();
+                    //WebDriverManager.firefoxdriver().setup();
+                    WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
                     FirefoxOptions options = new FirefoxOptions();
 
                     options.addArguments("--window-size=1920,1080");
