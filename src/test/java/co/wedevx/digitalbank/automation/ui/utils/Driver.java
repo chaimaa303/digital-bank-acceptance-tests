@@ -39,6 +39,7 @@ public class Driver {
                     driver = new InternetExplorerDriver();
                     break;
                 case "edge":
+                    WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
 
