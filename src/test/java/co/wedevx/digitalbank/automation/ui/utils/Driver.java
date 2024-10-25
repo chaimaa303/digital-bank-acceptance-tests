@@ -24,11 +24,11 @@ public class Driver {
     private static WebDriver driver;
 
     //private constructor
-    private Driver() {
+    public Driver() {
 
     }
 
-    public static WebDriver getDriver() throws MalformedURLException {
+    public static WebDriver getDriver()  {
         if (driver == null) {
             String browser = ConfigReader.getPropertiesValue("browser");
 

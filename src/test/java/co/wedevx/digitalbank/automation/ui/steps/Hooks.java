@@ -25,12 +25,10 @@ public class Hooks {
 
     @Before("not @Registration")
     public void the_user_on_dbank_homepage() {
-        try {
+
             getDriver().get("http://chaimaak2540.mydevx.com/bank/login");
             //getDriver().get("https://dbank-qa.wedevx.co/bank/login");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+
 
 
     }

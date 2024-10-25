@@ -15,16 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationSteps {
 
-
-
     RegistrationPage registrationPage = new RegistrationPage(getDriver());
     List<Map<String, Object>> nextValList = new ArrayList<>();
 
-    public RegistrationSteps() throws MalformedURLException {
-    }
 
     @Given("User navigates to Digital Bank siginup Page")
-    public void user_navigates_to_digital_bank_siginup_page() throws MalformedURLException {
+    public void user_navigates_to_digital_bank_siginup_page()  {
         getDriver().get(ConfigReader.getPropertiesValue("digitalbank.registrationpageurl"));
        assertEquals("Digital Bank", getDriver().getTitle(),     "Registration page title mismatch");
     }
