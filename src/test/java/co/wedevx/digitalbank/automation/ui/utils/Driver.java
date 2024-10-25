@@ -3,8 +3,11 @@ package co.wedevx.digitalbank.automation.ui.utils;
 import io.cucumber.java.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
+import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
+import io.github.bonigarcia.wdm.managers.FirefoxDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -43,20 +46,32 @@ public class Driver {
                     driver = new EdgeDriver();
                     break;
 
+//                case "headless":
+//                    WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
+//                    FirefoxOptions options = new FirefoxOptions();
+//
+//                    options.addArguments("--window-size=1920,1080");
+//                    options.addArguments("disable-extensions");
+//                    options.addArguments("--proxy-server='direct://'");
+//                    options.addArguments("--proxy-bypass-list=*");
+//                    options.addArguments("--start-maximized");
+//                    options.addArguments("--headless");
+//
+//                    driver = new FirefoxDriver(options);
+//                    break;
                 case "headless":
-                    //WebDriverManager.firefoxdriver().setup();
-                    WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
-                    FirefoxOptions options = new FirefoxOptions();
-
-                    options.addArguments("--window-size=1920,1080");
+                    ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
+                    ChromeOptions options = new ChromeOptions();
+                    options.addArguments("--window-size=1920,1080"); // you can leave out 1920
                     options.addArguments("disable-extensions");
+                    options.setExperimentalOption("useAutomationExtension", false); // we do not want to use useAutomationExtension
                     options.addArguments("--proxy-server='direct://'");
                     options.addArguments("--proxy-bypass-list=*");
                     options.addArguments("--start-maximized");
                     options.addArguments("--headless");
-
-                    driver = new FirefoxDriver(options);
+                    driver = new ChromeDriver(options);
                     break;
+
                 case "saucelabs":
                     String platform = ConfigReader.getPropertiesValue("dbank.saucelabs.platform");
                     String browserType = ConfigReader.getPropertiesValue("dbank.saucelabs.browser");
